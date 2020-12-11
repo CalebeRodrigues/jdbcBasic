@@ -20,15 +20,8 @@ public class Program {
 		try {
 			conn = DB.getConnection();
 			
-			st = conn.prepareStatement("Insert Into seller (Name, Email, BirthDate, BaseSalary, DepartmentId) "
-					+ "Values (?,?,?,?,?)" , Statement.RETURN_GENERATED_KEYS);
-			
-			st.setString(1, "Carl Purple");
-			st.setString(2, "carl@gmail.com");
-			st.setDate(3, new java.sql.Date(sdf.parse("22/04/2020").getTime()));
-			st.setDouble(4, 3000.00);
-			st.setInt(5, 4);
-			
+			st = conn.prepareStatement("Insert Into department (Name) values ('D1'), ('D2')",
+															Statement.RETURN_GENERATED_KEYS);
 			int rowsAffected = st.executeUpdate();
 
 
@@ -42,9 +35,6 @@ public class Program {
 			else System.out.println("No rows Affected!");
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
-		}
-		catch(ParseException e) {
 			e.printStackTrace();
 		}
 		finally {
