@@ -2,18 +2,14 @@ package application;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 import db.DB;
+import db.DbIntegrityException;
 
 public class Program {
 
 	public static void main(String[] args) {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Connection conn = null;
 		PreparedStatement st = null;
 		
@@ -21,18 +17,17 @@ public class Program {
 			conn = DB.getConnection();
 			
 			st = conn.prepareStatement(
-					"Update seller Set BaseSalary = BaseSalary + ? "
-					+ "Where DepartmentId = ?");
+					"Delete From department "
+					+ "Where Id = ?");
 			
-			st.setDouble(1, 200.00);
-			st.setInt(2, 2);
+			st.setInt(1, 5);
 			
 			int rowsAffected = st.executeUpdate();
 
 			System.out.println("Done! Rows Affected = " + rowsAffected);
 		}
 		catch(SQLException e) {
-			e.printStackTrace();
+			throw new DbIntegrityException(e.getMessage());
 		}
 		finally {
 			DB.closeStatement(st);
