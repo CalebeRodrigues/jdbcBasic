@@ -20,19 +20,16 @@ public class Program {
 		try {
 			conn = DB.getConnection();
 			
-			st = conn.prepareStatement("Insert Into department (Name) values ('D1'), ('D2')",
-															Statement.RETURN_GENERATED_KEYS);
+			st = conn.prepareStatement(
+					"Update seller Set BaseSalary = BaseSalary + ? "
+					+ "Where DepartmentId = ?");
+			
+			st.setDouble(1, 200.00);
+			st.setInt(2, 2);
+			
 			int rowsAffected = st.executeUpdate();
 
-
-			if(rowsAffected > 0) {
-				ResultSet res = st.getGeneratedKeys();
-				while(res.next()) {
-					int id = res.getInt(1);
-					System.out.println("Done! Id = " + id );
-				}	
-			}
-			else System.out.println("No rows Affected!");
+			System.out.println("Done! Rows Affected = " + rowsAffected);
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
